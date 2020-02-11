@@ -1,2 +1,2 @@
-# d2iq-kubernetes-addons
+# ksphere-addons
 OpenEBS Kubernetes Addon Repository for KSphere
