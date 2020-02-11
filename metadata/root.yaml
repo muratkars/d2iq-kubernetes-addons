@@ -1,0 +1,12 @@
+---
+openebs:
+  display_name: openebs
+  description: openebs
+  logo: openebs/logo.png
+  category: other
+  overview: openebs/overview.md
+  resources:
+    links:
+      - type: support
+        title: Support Resources
+        link: https://portal.mayadata.io/home
