@@ -1,0 +1,48 @@
+---
+apiVersion: kubeaddons.mesosphere.io/v1beta1
+kind: ClusterAddon
+metadata:
+  name: openebsdao
+# do we need to have namespace created?
+#  namespace: openebs
+  labels:
+    kubeaddons.mesosphere.io/name: openebsdao
+# what are the other options for provides parameter?
+    kubeaddons.mesosphere.io/provides: storageclass
+# there is problem here, still operator requires a cloud CSI provider
+# we should add the awscsiprovisioner without making it a defaultstorageclass
+#    kubeaddons.mesosphere.io/hack-requires-defaultstorageclass: "true"
+  annotations:
+    catalog.kubeaddons.mesosphere.io/addon-revision: "0.1.0-1"
+    appversion.kubeaddons.mesosphere.io/awsebscsiprovisioner: "0.1.0"
+# add helm values - currently default values
+    values.chart.helm.kubeaddons.mesosphere.io/openebsdao: "https://murat.karslioglu.com/charts/stable/openebsdao/values.yaml"
+spec:
+  namespace: kube-system
+  requires:
+    - matchLabels:
+        kubeaddons.mesosphere.io/name: defaultstorageclass-protection
+  kubernetes:
+    minSupportedVersion: v1.15.6
+# cloudProvider- added azure and none, is that correct? how about gcp
+  cloudProvider:
+    - name: aws
+      enabled: true
+    - name: azure
+      enabled: ture
+    - name: none
+      enabled: true 
+  chartReference:
+    chart: openebsdao
+# should i create repo under or can i use https://kubernetes-charts.storage.googleapis.com?
+    repo: http://murat.karslioglu.com/charts/stable
+    version: 0.1.0
+# Why do we have values files if we can provide the values also here?
+#    values: |
+#      ---
+#      defaultStorageConfig:
+#        enabled: true
+#      analytics:
+#        enabled: true
+#      # Specify in hours the duration after which a ping event needs to be sent.
+#        pingInterval: "24h"

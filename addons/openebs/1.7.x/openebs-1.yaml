@@ -31,15 +31,13 @@ spec:
       enabled: true 
   chartReference:
     chart: stable/openebs
-# should i create repo under or can i use https://kubernetes-charts.storage.googleapis.com?
-    repo: http://murat.karslioglu.com/charts/stable
     version: 1.7.0
-# Why do we have values files if we can provide the values also here?
+# Optional values
 #    values: |
 #      ---
 #      defaultStorageConfig:
 #        enabled: true
 #      analytics:
 #        enabled: true
-#      # Specify in hours the duration after which a ping event needs to be sent.
+# Specify in hours the duration after which a ping event needs to be sent.
 #        pingInterval: "24h"
