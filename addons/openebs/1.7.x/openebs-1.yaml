@@ -1,0 +1,45 @@
+---
+apiVersion: kubeaddons.mesosphere.io/v1beta1
+kind: ClusterAddon
+metadata:
+  name: openebs
+# do we need to have namespace created?
+#  namespace: openebs
+  labels:
+    kubeaddons.mesosphere.io/name: openebs
+# what are the other options for provides parameter?
+    kubeaddons.mesosphere.io/provides: storageclass
+  annotations:
+    catalog.kubeaddons.mesosphere.io/addon-revision: "1.7.0-1"
+    appversion.kubeaddons.mesosphere.io/awsebscsiprovisioner: "1.7.0"
+# add helm values - currently default values
+    values.chart.helm.kubeaddons.mesosphere.io/openebs: "https://murat.karslioglu.com/charts/stable/openebs/values.yaml"
+spec:
+  namespace: kube-system
+  requires:
+    - matchLabels:
+        kubeaddons.mesosphere.io/name: defaultstorageclass-protection
+  kubernetes:
+    minSupportedVersion: v1.15.6
+# cloudProvider- added azure and none, is that correct?
+  cloudProvider:
+    - name: aws
+      enabled: true
+    - name: azure
+      enabled: ture
+    - name: none
+      enabled: true 
+  chartReference:
+    chart: stable/openebs
+# should i create repo under or can i use https://kubernetes-charts.storage.googleapis.com?
+    repo: http://murat.karslioglu.com/charts/stable
+    version: 1.7.0
+# Why do we have values files if we can provide the values also here?
+#    values: |
+#      ---
+#      defaultStorageConfig:
+#        enabled: true
+#      analytics:
+#        enabled: true
+#      # Specify in hours the duration after which a ping event needs to be sent.
+#        pingInterval: "24h"
